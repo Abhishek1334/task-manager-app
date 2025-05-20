@@ -14,8 +14,10 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "User already exists" });
 
+    const lowerCaseEmail = email.toLowerCase();
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create({ name, email, password: hashedPassword });
+    await User.create({ name, email: lowerCaseEmail, password: hashedPassword });
 
     return res.status(201).json({ message: "Registered successfully" });
   } catch (error) {
@@ -39,7 +41,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: "1d" });
 
-    return res.status(200).json({ token });
+    return res.status(200).json({ user, token });
   } catch (error) {
     next(error);
   }

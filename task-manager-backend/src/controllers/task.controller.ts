@@ -6,7 +6,6 @@ const isValidObjectId = (id: string): boolean => /^[0-9a-fA-F]{24}$/.test(id);
 
 export const createTask = async (req: Request, res: Response, next: NextFunction) => {
   const { name, description, priorityLevel, status } = req.body;
-
   if (!name || typeof name !== "string") {
     return res.status(400).json({ message: "Name is required and must be a string" });
   }
