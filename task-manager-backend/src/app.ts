@@ -10,13 +10,26 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
-app.use(cors(
-	{
-		origin : ["http://localhost:5000","https://task-manager-app-iota-three.vercel.app"],
-		credentials : true
-	}
-));
+const allowedOrigins = [
+  "http://localhost:5000",
+  "https://task-manager-app-iota-three.vercel.app"
+];
+
+const corsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    // Allow requests with no origin (like Postman or curl)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Routes
