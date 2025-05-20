@@ -13,7 +13,7 @@ const app = express();
 // Middleware
 app.use(cors(
 	{
-		origin : ["http://localhost:5000","https://task-manager-app-xutl.onrender.com"],
+		origin : ["http://localhost:5000","https://task-manager-app-iota-three.vercel.app"],
 		credentials : true
 	}
 ));
